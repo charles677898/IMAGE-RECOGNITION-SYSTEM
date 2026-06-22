@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Recognition System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>📷 Image Recognition System</h1>
+
+        <p class="subtitle">
+            Upload an image and let AI identify objects instantly.
+        </p>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/history">History</a>
+            <a href="/dashboard">Dashboard</a>
+        </div>
+
+        <div class="card">
+
+            <form action="/predict"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <input type="file"
+                       name="image"
+                       accept="image/*"
+                       required>
+
+                <button type="submit">
+                    Predict Image
+                </button>
+
+            </form>
+
+        </div>
+
+        {% if image %}
+
+        <div class="card">
+
+            <h2>Uploaded Image</h2>
+
+            <img src="{{ url_for('static', filename='uploads/' + image) }}"
+                 alt="Uploaded Image"
+                 class="uploaded-image">
+
+        </div>
+
+        {% endif %}
+
+        {% if prediction %}
+
+        <div class="card">
+
+            <h2>Prediction Result</h2>
+
+            <div class="result-box">
+
+                <h3>{{ prediction }}</h3>
+
+                <p>
+                    Confidence:
+                    <strong>{{ confidence }}%</strong>
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% if predictions %}
+
+        <div class="card">
+
+            <h2>Top 3 Predictions</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Object</th>
+                        <th>Confidence (%)</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in predictions %}
+
+                    <tr>
+
+                        <td>{{ item[0] }}</td>
+
+                        <td>{{ item[1] }}</td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
